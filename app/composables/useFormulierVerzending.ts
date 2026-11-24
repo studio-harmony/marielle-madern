@@ -31,6 +31,8 @@ interface Opties {
 export function useFormulierVerzending(o: Opties) {
   const bezig = ref(false)
   const klaar = ref(false)
+  // De Worker nam het bericht aan maar de mail komt later (antwoord 200 met `later: true`)
+  const later = ref(false)
   const melding = ref<Melding | null>(null)
 
   async function verstuur() {
@@ -58,6 +60,10 @@ export function useFormulierVerzending(o: Opties) {
       o.turnstile.nieuwToken()
       if (res.ok) {
         o.turnstile.ruimOp()
+        later.value = await res
+          .json()
+          .then((b) => b?.later === true)
+          .catch(() => false)
         klaar.value = true
         await nextTick()
         const b = o.bevestiging.value
@@ -90,5 +96,5 @@ export function useFormulierVerzending(o: Opties) {
     }
   }
 
-  return { bezig, klaar, melding, verstuur }
+  return { bezig, klaar, later, melding, verstuur }
 }

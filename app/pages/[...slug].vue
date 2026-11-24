@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Vaste pagina's uit content/paginas: over-mij, contact, bestel-de-ep, privacy
+// Vaste pagina's uit content/paginas: over-mij, contact (met het contactformulier), bestel-de-ep, privacy
 const route = useRoute()
 const pad = route.path.replace(/\/$/, '') || '/'
 
@@ -38,8 +38,18 @@ usePaginaDeelafbeelding(pad, pagina.value.title)
         <p v-if="pagina.knop">
           <a class="knop" :href="pagina.knop.link">{{ pagina.knop.tekst }}</a>
         </p>
+        <!-- Het contactformulier staat onder de inleiding (design/contactformulier.md) -->
+        <LazyContactFormulier v-if="pad === '/contact'" class="formulier" />
       </div>
       <EpNummers v-if="pagina.path === '/bestel-de-ep'" />
     </div>
   </article>
 </template>
+
+<style scoped>
+/* 32 px onder de inleiding */
+.formulier {
+  display: block;
+  margin-block-start: 2rem;
+}
+</style>

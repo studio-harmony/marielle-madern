@@ -256,6 +256,22 @@ function controleerKoppenEnLinks(route, html, fout) {
     if (!/rel="(prev|next)"/.test(hoofd))
       fout('geen link naar een vorig of volgend nummer in de inhoud')
   }
+  if (route === '/contact/') {
+    // Het contactformulier: de velden zijn er, het e-mailadres staat zichtbaar als alternatief (in de inleiding en in
+    // de regel zonder JavaScript), en de groep met boekingsvelden staat er pas als 'Boeking' is gekozen
+    if (!/<form[^>]*action="\/api\/contact"/.test(hoofd)) fout('het contactformulier ontbreekt')
+    for (const naam of ['naam', 'email', 'bericht', 'website'])
+      if (!new RegExp(`name="${naam}"`).test(hoofd))
+        fout(`het contactformulier mist het veld ${naam}`)
+    const vraag = hoofd.match(/<input[^>]*name="onderwerp"[^>]*value="vraag"[^>]*>/)?.[0] ?? ''
+    if (!/\schecked[\s>]/.test(vraag)) fout('"Algemene vraag" moet standaard gekozen zijn')
+    if (!hoofd.includes('href="mailto:hallo@mariellemadern.nl"'))
+      fout('het e-mailadres staat niet als link op de contactpagina')
+    if (!/<noscript[^>]*>[^<]*hallo@mariellemadern\.nl/.test(hoofd))
+      fout('de regel zonder JavaScript met het e-mailadres ontbreekt')
+    if (/name="datumtijd"/.test(hoofd))
+      fout('de boekingsvelden horen er pas te staan als Boeking is gekozen')
+  }
   if (route === '/over-de-muziek/') {
     // Elke link naar een nummer heeft een naam: linktekst, alt-tekst van de afbeelding of aria-label
     for (const [, tag, binnen] of hoofd.matchAll(

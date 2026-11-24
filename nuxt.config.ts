@@ -66,12 +66,12 @@ export default defineNuxtConfig({
   },
 
   hooks: {
-    // Het bladmuziekformulier is een apart stukje code (Lazy-component) dat alleen op een nummerpagina mét formulier
-    // wordt geladen. Zonder dit zet Nuxt er op elke nummerpagina een prefetch voor, en dan downloadt de browser het
-    // (ruim 12 KB) toch op pagina's zonder formulier.
+    // Het bladmuziekformulier en het contactformulier zijn aparte stukjes code (Lazy-componenten) die alleen op een
+    // pagina mét formulier worden geladen. Zonder dit zet Nuxt er op elke nummerpagina (of vaste pagina) een prefetch
+    // voor, en dan downloadt de browser ze toch op pagina's zonder formulier.
     'build:manifest': (manifest) => {
       for (const [sleutel, bestand] of Object.entries(manifest)) {
-        if (sleutel.includes('BladmuziekFormulier')) {
+        if (sleutel.includes('BladmuziekFormulier') || sleutel.includes('ContactFormulier')) {
           bestand.prefetch = false
           bestand.preload = false
         }

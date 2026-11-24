@@ -345,7 +345,9 @@ describe('misbruik', () => {
     assert.equal(hostToegestaan(env, 'preview-pr-35-mariellemadern.mmadern.workers.dev'), false)
     // Geen wildcard en geen geheimen in het bestand
     assert.ok(!String(config.vars.TOEGESTANE_HOSTS).includes('*'))
-    assert.deepEqual(Object.keys(config.vars), ['TOEGESTANE_HOSTS'])
+    // Alleen de twee gewone variabelen (het contactformulier staat aan: CONTACT_AAN is precies 'aan')
+    assert.deepEqual(Object.keys(config.vars), ['TOEGESTANE_HOSTS', 'CONTACT_AAN'])
+    assert.equal(config.vars.CONTACT_AAN, 'aan')
   })
   test('niet-toegestaan adres zonder secrets: 403 (de hostcontrole komt vóór de 503)', async () => {
     const adres = 'https://mariellemadern.mmadern.workers.dev'

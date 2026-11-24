@@ -34,7 +34,9 @@
   // de preview-adressen (die een andere hostnaam hebben, bijvoorbeeld preview-pr-35-mariellemadern.mmadern.workers.dev)
   // blijven 403. Dit is een gewone, niet-geheime variabele. De secrets (RESEND_API_KEY, TURNSTILE_SECRET) staan niet in
   // dit bestand maar alleen in het Cloudflare-dashboard. Zie README.md, "Het hoofdadres van de Worker".
-  "vars": { "TOEGESTANE_HOSTS": "mariellemadern.mmadern.workers.dev" },
+  // CONTACT_AAN: 'aan' zet het contactformulier (POST /api/contact) aan; elke andere waarde, of de regel weghalen, geeft
+  // 503 (dan toont het formulier de melding met hallo@mariellemadern.nl). Terugdraaien is dus één regel.
+  "vars": { "TOEGESTANE_HOSTS": "mariellemadern.mmadern.workers.dev", "CONTACT_AAN": "aan" },
   // Limieten per minuut (de binding kent alleen perioden van 10 of 60 seconden): 3 per IP-adres, 1 per e-mailadres en
   // 10 voor de hele site. De Worker gebruikt als sleutel een HMAC van het IP-adres of e-mailadres; niets wordt bewaard.
   "ratelimits": [

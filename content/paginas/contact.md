@@ -7,18 +7,6 @@ kleur: sage
 accent: "Stuur een bericht"
 accentKleur: terracotta
 kop: "Voor boekingen of andere vragen"
-knop:
-  tekst: "Stuur een e-mail"
-  link: "mailto:hallo@mariellemadern.nl?subject=Boekingsaanvraag"
 ---
 
-Neem gerust contact met mij op voor:
-
-- Boekingen
-- Samenwerkingen
-- Muzikale ideeën
-- Vragen over mijn muziek of evenementen
-
-Stuur mij een e-mail op [hallo@mariellemadern.nl](mailto:hallo@mariellemadern.nl?subject=Boekingsaanvraag). Ik probeer je zo snel mogelijk te antwoorden.
-
-Voor een boeking help je mij met: datum en tijd, locatie, speeltijden en duur, vorm van het evenement en beschikbaar budget.
+Neem gerust contact met mij op voor boekingen, samenwerkingen, muzikale ideeën of vragen over mijn muziek. Vul het formulier hieronder in, of mail me op [hallo@mariellemadern.nl](mailto:hallo@mariellemadern.nl).
