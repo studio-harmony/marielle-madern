@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import { kanalen } from '~/data/kanalen'
+
+// De kop en de regel van de strook 'Nieuwsbrief' (design/teksten-nieuwsbrief.md, sectie 1). Ze staan hier en niet in
+// nieuwsbrief-teksten.ts: de voet staat op elke pagina en mag geen code van het formulier meetrekken (de teksten van het
+// formulier laden pas mee als het formulier in beeld komt).
+const NIEUWSBRIEF_KOP = 'Nieuwsbrief'
+const NIEUWSBRIEF_REGEL =
+  'Met de nieuwsbrief hou ik je op de hoogte van nieuwe muziek en activiteiten.'
 const { data: home } = await useAsyncData('voet-home', () =>
   queryCollection('home').select('voetlijst').first(),
 )
@@ -28,6 +35,20 @@ onMounted(() => {
 
 <template>
   <footer class="voet">
+    <!-- De strook 'Nieuwsbrief' bovenin de voet, op elke pagina (design/nieuwsbrief-aanmelden.md). Het formulier ontwaakt pas
+         als de strook in beeld komt (hydrate-on-visible) en wordt niet vooraf geladen. -->
+    <section class="voet__nieuwsbrief" aria-labelledby="voet-nieuwsbrief">
+      <div class="voet__nieuwsbrief-tekst">
+        <h2 id="voet-nieuwsbrief" class="voet__kop">{{ NIEUWSBRIEF_KOP }}</h2>
+        <p>{{ NIEUWSBRIEF_REGEL }}</p>
+      </div>
+      <LazyNieuwsbriefFormulier
+        hydrate-on-visible
+        class="voet__nieuwsbrief-formulier"
+        labelledby="voet-nieuwsbrief"
+      />
+    </section>
+
     <div class="voet__binnen">
       <nav aria-labelledby="voet-snel">
         <h2 id="voet-snel" class="voet__kop">Snel naar</h2>
@@ -83,10 +104,45 @@ onMounted(() => {
   padding-block: 5rem 3rem;
 }
 
+.voet__nieuwsbrief,
 .voet__binnen,
 .voet__onder {
   inline-size: min(100% - 2.5rem, 68.75rem);
   margin-inline: auto;
+}
+
+/* De strook 'Nieuwsbrief': 32 px ruimte en een lijn van 1 px lichtgoud eronder, even breed als de voetkolommen. Vanaf
+   1024 px links de kop en de regel en rechts het formulier (gelijk met de vier voetkolommen), eronder onder elkaar. */
+.voet__nieuwsbrief {
+  display: grid;
+  gap: 1rem;
+  padding-block-end: 2rem;
+  margin-block-end: 2rem;
+  border-block-end: 1px solid var(--kleur-lichtgoud);
+}
+
+.voet__nieuwsbrief-tekst p {
+  margin: 0;
+}
+
+/* Op een tablet is het formulier niet breder dan de tekstkolom (600 px), zoals in het ontwerp */
+.voet__nieuwsbrief-formulier {
+  max-inline-size: 37.5rem;
+}
+
+@media (min-width: 64rem) {
+  .voet__nieuwsbrief {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2.5rem;
+  }
+
+  .voet__nieuwsbrief-tekst {
+    grid-column: 1 / span 2;
+  }
+
+  .voet__nieuwsbrief-formulier {
+    grid-column: 3 / span 2;
+  }
 }
 
 .voet__binnen {

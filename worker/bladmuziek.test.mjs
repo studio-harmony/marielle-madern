@@ -357,13 +357,15 @@ describe('misbruik', () => {
     assert.equal(hostToegestaan(env, 'preview-pr-35-mariellemadern.mmadern.workers.dev'), false)
     // Geen wildcard en geen geheimen in het bestand
     assert.ok(!String(config.vars.TOEGESTANE_HOSTS).includes('*'))
-    // Alleen de twee gewone variabelen (het contactformulier staat aan: CONTACT_AAN is precies 'aan')
+    // Alleen gewone variabelen, geen geheimen (het contactformulier en het aanmeldformulier staan aan: precies 'aan')
     assert.deepEqual(Object.keys(config.vars), [
       'TOEGESTANE_HOSTS',
       'CONTACT_AAN',
       'BREVO_LIJST_ID',
+      'NIEUWSBRIEF_AAN',
     ])
     assert.equal(config.vars.CONTACT_AAN, 'aan')
+    assert.equal(config.vars.NIEUWSBRIEF_AAN, 'aan')
     // Het lijstnummer van de nieuwsbrief (lijst 'Nieuwsbrief' in Brevo); de sleutel is een secret en staat hier niet
     assert.equal(config.vars.BREVO_LIJST_ID, '4')
     assert.ok(!JSON.stringify(config).includes('BREVO_API_KEY'))

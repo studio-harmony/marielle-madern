@@ -487,7 +487,7 @@ describe('privacy en de configuratie', () => {
     assert.equal(res.headers.get('cache-control'), 'no-store')
     assert.equal(res.headers.get('x-robots-tag'), 'noindex')
   })
-  test('wrangler.jsonc: drie eigen limieten met eigen namespace_id; het eindpunt staat uit (geen NIEUWSBRIEF_AAN); het lijstnummer is 4', () => {
+  test('wrangler.jsonc: drie eigen limieten met eigen namespace_id; het eindpunt staat aan (NIEUWSBRIEF_AAN is aan, in het bestand); het lijstnummer is 4', () => {
     const tekst = readFileSync(new URL('../wrangler.jsonc', import.meta.url), 'utf-8')
     const config = JSON.parse(
       tekst
@@ -509,7 +509,7 @@ describe('privacy en de configuratie', () => {
       LIMIET_NIEUWSBRIEF_ADRES: [1, 60],
       LIMIET_NIEUWSBRIEF_ALGEMEEN: [10, 60],
     })
-    assert.equal(config.vars.NIEUWSBRIEF_AAN, undefined)
+    assert.equal(config.vars.NIEUWSBRIEF_AAN, 'aan')
     assert.equal(config.vars.BREVO_LIJST_ID, '4')
   })
 })

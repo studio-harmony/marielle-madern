@@ -50,10 +50,14 @@
   // BREVO_LIJST_ID: het nummer van de lijst 'Nieuwsbrief' in Brevo (gewoon een nummer, geen geheim): wie zich aanmeldt
   // (nu: het vakje bij de bladmuziek) komt op die lijst. De sleutel BREVO_API_KEY is een secret in het Cloudflare-dashboard.
   // Zonder sleutel of met een ongeldig nummer meldt de Worker niemand aan (de bladmuziek gaat gewoon).
+  // NIEUWSBRIEF_AAN: 'aan' zet het losse aanmeldformulier voor de nieuwsbrief aan (POST /api/nieuwsbrief, het formulier in de voet);
+  // elke andere waarde, of de regel weghalen, geeft 503 (het formulier toont dan de melding met hallo@mariellemadern.nl).
+  // Hier in het bestand, niet in het dashboard: een uitrol overschrijft variabelen uit het dashboard.
   "vars": {
     "TOEGESTANE_HOSTS": "mariellemadern.mmadern.workers.dev",
     "CONTACT_AAN": "aan",
-    "BREVO_LIJST_ID": "4"
+    "BREVO_LIJST_ID": "4",
+    "NIEUWSBRIEF_AAN": "aan"
   },
   // Elke 5 minuten draait `scheduled` in worker/index.mjs (worker/onderhoud.mjs): berichten waarvan een mail niet is
   // gelukt opnieuw versturen (tot 24 uur) en berichten van 30 dagen of ouder anonimiseren. Zonder de database
@@ -67,7 +71,7 @@
     // 1 per e-mailadres en 5 voor de hele site per minuut; een bericht kost twee mails (het Resend-plafond is
     // 100 per dag, gedeeld met de bladmuziek). Het eindpunt staat aan zolang CONTACT_AAN op 'aan' staat (zie "vars").
     // Het losse aanmeldformulier voor de nieuwsbrief (/api/nieuwsbrief) heeft ook eigen limieten: 3 per IP-adres, 1 per
-    // e-mailadres en 10 voor de hele site per minuut. Het eindpunt blijft uit (503) tot NIEUWSBRIEF_AAN op 'aan' staat.
+    // e-mailadres en 10 voor de hele site per minuut. Het eindpunt staat aan zolang NIEUWSBRIEF_AAN op 'aan' staat (zie "vars").
     { "name": "LIMIET_NIEUWSBRIEF_IP", "namespace_id": "1014", "simple": { "limit": 3, "period": 60 } },
     { "name": "LIMIET_NIEUWSBRIEF_ADRES", "namespace_id": "1015", "simple": { "limit": 1, "period": 60 } },
     { "name": "LIMIET_NIEUWSBRIEF_ALGEMEEN", "namespace_id": "1016", "simple": { "limit": 10, "period": 60 } },

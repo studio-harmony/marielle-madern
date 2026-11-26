@@ -25,6 +25,7 @@
 
   /* Foutmeldingen (voorstel Designer, akkoord eigenaar nodig): 6,9:1 op wit, 6,4:1 op crème */
   --kleur-fout: #a3312b;
+  --tekst-zacht: #5c5d55; /* alleen voor aanvullingen zoals '(optioneel)' in een label: 6,2:1 op crème, 6,7:1 op wit */
 
   /* Rollen */
   --achtergrond: var(--kleur-wit);
@@ -47,7 +48,9 @@
   --focus-afstand: 3px;
 
   /* Lettertypen. mae-variable komt uit de Adobe Fonts-kit bxn6xtn. Atlantis: licentie aanwezig, omzetten naar WOFF2 toegestaan */
-  --font-tekst: 'mae-variable', 'mae-variable Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-tekst:
+    'mae-variable', 'mae-variable Fallback', system-ui, -apple-system, 'Segoe UI', Roboto,
+    sans-serif;
   --font-accent: 'Atlantis', 'Segoe Script', 'Brush Script MT', cursive;
 
   /* Lettergroottes in rem, zodat bezoekers hun eigen tekstgrootte behouden. Basis is 19px (1,1875rem) zoals nu */

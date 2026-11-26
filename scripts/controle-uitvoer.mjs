@@ -124,6 +124,39 @@ for (const pad of lijst) {
   }
   controleerLettertype(html, fout)
   controleerJsonLd(route, html, fout)
+  controleerNieuwsbriefStrook(html, fout)
+}
+
+// De strook 'Nieuwsbrief' bovenin de voet staat op elke pagina: een h2 als naam van het formulier, voornaam en achternaam
+// (beide optioneel, met 'optioneel' in het label) en het e-mailadres (verplicht), de verborgen val, de regel zonder
+// JavaScript met het e-mailadres, en 'optioneel' hoort bij de naam van het veld (geen placeholder).
+function controleerNieuwsbriefStrook(html, fout) {
+  const voet = html.match(/<footer[\s\S]*<\/footer>/)?.[0] ?? ''
+  if (!/<h2 id="voet-nieuwsbrief"[^>]*>Nieuwsbrief<\/h2>/.test(voet))
+    return fout('de voet mist de kop Nieuwsbrief')
+  const form = voet.match(/<form[^>]*action="\/api\/nieuwsbrief"[^>]*>[\s\S]*?<\/form>/)?.[0]
+  if (!form) return fout('de voet mist het aanmeldformulier voor de nieuwsbrief')
+  if (!/aria-labelledby="voet-nieuwsbrief"/.test(form))
+    fout('het aanmeldformulier heeft de kop niet als naam')
+  for (const [naam, auto] of [
+    ['voornaam', 'given-name'],
+    ['achternaam', 'family-name'],
+    ['email', 'email'],
+  ]) {
+    const veld = form.match(new RegExp(`<input[^>]*name="${naam}"[^>]*>`))?.[0] ?? ''
+    if (!veld) fout(`het aanmeldformulier mist het veld ${naam}`)
+    else if (!veld.includes(`autocomplete="${auto}"`))
+      fout(`het veld ${naam} mist autocomplete="${auto}"`)
+    else if (veld.includes('placeholder='))
+      fout(`het veld ${naam} heeft een placeholder (het label zegt het al)`)
+    else if ((naam === 'email') !== /\srequired[\s>]/.test(veld))
+      fout(`alleen het e-mailadres is verplicht (veld ${naam})`)
+  }
+  if ((form.match(/\(optioneel\)/g) ?? []).length !== 2)
+    fout("'(optioneel)' hoort bij precies twee labels (voornaam en achternaam)")
+  if (!/<noscript[^>]*>[^<]*hallo@mariellemadern\.nl/.test(form))
+    fout('de regel zonder JavaScript met het e-mailadres ontbreekt bij het aanmeldformulier')
+  if (!/name="website"/.test(form)) fout('het aanmeldformulier mist de verborgen val')
 }
 
 function controleerJsonLd(route, html, fout) {

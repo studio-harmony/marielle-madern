@@ -74,7 +74,9 @@ export default defineNuxtConfig({
       // De formulieren en alles wat alleen zij gebruiken (de gedeelde stukjes, zoals de melding en het laden van
       // Turnstile) krijgen geen prefetch of preload
       const vorm = (k: string) =>
-        k.includes('BladmuziekFormulier') || k.includes('ContactFormulier')
+        k.includes('BladmuziekFormulier') ||
+        k.includes('ContactFormulier') ||
+        k.includes('NieuwsbriefFormulier')
       const door: Record<string, Set<string>> = {}
       for (const [k, v] of Object.entries(manifest))
         for (const i of [...(v.imports ?? []), ...(v.dynamicImports ?? [])])

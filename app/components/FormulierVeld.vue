@@ -5,7 +5,15 @@
 // de klasse `veld__invoer` voor de opmaak; dat doet het formulier, want het weet welk soort veld het is.
 // Met `hulp` staat er een hulptekst tussen het label en het veld (id `<id>-hulp`; het formulier koppelt hem met
 // `aria-describedby`). Een invoer met `veld__invoer--tekstvak` (een `textarea`) is 168 px hoog.
-defineProps<{ id: string; foutId: string; label: string; hulp?: string; fout?: string | null }>()
+// Met `optioneel` staat er '(optioneel)' in het label, in een rustig grijs en normaal gewicht: het hoort bij de naam van het veld.
+defineProps<{
+  id: string
+  foutId: string
+  label: string
+  optioneel?: string
+  hulp?: string
+  fout?: string | null
+}>()
 </script>
 
 <template>
@@ -19,7 +27,9 @@ defineProps<{ id: string; foutId: string; label: string; hulp?: string; fout?: s
     </template>
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label v-else :for="id" class="veld__etiket">
-      <span class="veld__label">{{ label }}</span>
+      <span class="veld__label"
+        >{{ label }}<span v-if="optioneel" class="veld__optioneel"> ({{ optioneel }})</span></span
+      >
       <slot />
     </label>
     <div :id="foutId" role="alert">
@@ -64,6 +74,13 @@ defineProps<{ id: string; foutId: string; label: string; hulp?: string; fout?: s
 .veld__label {
   margin-block-end: 0.625rem;
   font-weight: var(--gewicht-vet);
+}
+
+/* '(optioneel)': normaal gewicht, 15 px, rustig grijs (6,2:1 op crème) */
+.veld__optioneel {
+  color: var(--tekst-zacht);
+  font-size: 0.9375rem;
+  font-weight: var(--gewicht-normaal);
 }
 
 /* Met een hulptekst: 4 px tussen label en hulptekst, 10 px tussen hulptekst en veld */
